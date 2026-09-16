@@ -33,6 +33,7 @@ def ast_tree(source_code):
 @pytest.fixture
 def run_program(file_path):
     def _run(user_input):
+        env = {**subprocess.os.environ, "PYTHONUTF8": "1"}
         result = subprocess.run(
             [sys.executable, str(file_path)],
             input=user_input,
@@ -40,6 +41,7 @@ def run_program(file_path):
             capture_output=True,
             encoding="utf-8",
             timeout=2,
+            env=env,
         )
 
         assert result.returncode == 0, (
